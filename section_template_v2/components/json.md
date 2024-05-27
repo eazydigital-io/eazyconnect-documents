@@ -26,6 +26,9 @@ type Button = {
   fileName?: string
   shareUrl?: string
   shareMsg?: string
+  showOnStatus?: string[]
+  showOnProductTypes?: string[]
+  eval?: string // This is a string javascript condition, In a code we will use `eval` to execute this condition
 }
 
 type KeyByProductType = {
@@ -180,6 +183,7 @@ const blank = <div></div>
       "color": "secondary", // Can `Undefined`
       "variant": "outline", // Can `Undefined`
       "action": "entity_update", // Update entity data
+      "url": "/approve", // Can `Undefined` (Ex Result: /${entity_name}/${id}/approve)
       "body": { "status": "completed" } // Body to update entity data
     },
     {
@@ -188,6 +192,7 @@ const blank = <div></div>
       "color": "warning", // Can `Undefined`
       "variant": "ghost", // Can `Undefined`
       "action": "entity_patch", // Patch entity data
+      "url": undefined, // Can `Undefined` (Ex Result: /${entity_name}/${id})
       "body": { "status": "completed" } // Body to patch entity data
     },
     {
@@ -195,6 +200,7 @@ const blank = <div></div>
       "icon": "FiX", // Can `Undefined`
       "color": "danger", // Can `Undefined`
       "variant": "solid", // Can `Undefined`
+      "url": "/remove/example", // Can `Undefined` (Ex Result: /${entity_name}/${id}/remove/example)
       "action": "entity_delete" // Delete entity data
     },
   ]
