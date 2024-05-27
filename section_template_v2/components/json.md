@@ -13,13 +13,16 @@ type RenderType = 'text' | 'label' | 'button' | 'file' | 'list' | 'step' | 'prod
 type ValueType = 'text' | 'date' | 'date_time' | 'date_status' | 'number' | 'number_no_digit' | 'short_number' | 'price' | 'price_no_digit' | 'short_price' | 'currency' | 'currency_no_digit' | 'short_currency' | 'product_type' | 'status' | 'tag' | 'doc_no' | 'image' | 'file' | 'link' | 'blank'
 
 type Button = {
+  color?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark' | 'white' // Default: 'primary'
+  variant?: 'solid' | 'outline' | 'ghost' // Default: 'solid'
   label?: string
   className?: string
-  action?: 'share' | 'download' | 'internal_download'
+  action?: 'share' | 'download' | 'internal_download' | 'entity_update' | 'entity_patch' | 'entity_delete'
   icon?: FeatherIcon // Ex: 'FiX' | 'FiEdit' | 'FiCheck' | ...
   isIconLeft?: boolean
   width?: 'auto' | 'full' | 'wide' | 'fit'
   url?: string
+  body?: any
   fileName?: string
   shareUrl?: string
   shareMsg?: string
@@ -139,25 +142,25 @@ const blank = <div></div>
   "renderType": "label", // Required
   "showOnStatus": ["draft", "submit"], // Can `Undefined`
   "showOnProductTypes": ["motor", "health"], // Can `Undefined`
-  "className": "text-primary", // Can `Undefined`
+  "className": "text-black", // Can `Undefined`
   "buttons": [
     // Ex: Button `download`
     {
-      "className": "btn-primary", // Can `Undefined`
+      "className": "btn-white", // Can `Undefined`
       "action": "download", // Download file by URL in the JSON data
       "url": "https://example.com/download", // May be you can use key in the JSON data to get the URL
       "fileName": "example.pdf" // May be you can use key in the JSON data to get the URL
     },
     // Ex: Button `internal_download`
     {
-      "className": "btn-primary", // Can `Undefined`
+      "className": "btn-white", // Can `Undefined`
       "action": "internal_download", // Download file by URL in the JSON data passed to the Core API
       "url": "${file.0.url}", // May be you can use key in the JSON data to get the URL
       "fileName": "${file.0.name}" // May be you can use key in the JSON data to get the URL
     },
     // Ex: Button `share`
     {
-      "className": "btn-primary", // Can `Undefined`
+      "className": "btn-white", // Can `Undefined`
       "action": "share", // Share button can copy URL to clipboard
       "shareUrl": "${file.0.url}", // May be you can use key in the JSON data to get the URL
       "shareMsg": "${file.0.name}" // May be you can use key in the JSON data to get the URL
@@ -165,10 +168,34 @@ const blank = <div></div>
     // Ex: General Button
     {
       "label": "Button Label", // Can `Undefined`
-      "className": "btn-primary", // Can `Undefined`
+      "className": "btn-white", // Can `Undefined`
       "icon": "FiX", // Can `Undefined`
       "isIconLeft": true, // Can `Undefined`
       "width": "full", // Can `Undefined`
+    },
+    // Ex: Entity Action Button
+    {
+      "label": "Button Label", // Can `Undefined`
+      "icon": "FiX", // Can `Undefined`
+      "color": "secondary", // Can `Undefined`
+      "variant": "outline", // Can `Undefined`
+      "action": "entity_update", // Update entity data
+      "body": { "status": "completed" } // Body to update entity data
+    },
+    {
+      "label": "Button Label", // Can `Undefined`
+      "icon": "FiX", // Can `Undefined`
+      "color": "warning", // Can `Undefined`
+      "variant": "ghost", // Can `Undefined`
+      "action": "entity_patch", // Patch entity data
+      "body": { "status": "completed" } // Body to patch entity data
+    },
+    {
+      "label": "Button Label", // Can `Undefined`
+      "icon": "FiX", // Can `Undefined`
+      "color": "danger", // Can `Undefined`
+      "variant": "solid", // Can `Undefined`
+      "action": "entity_delete" // Delete entity data
     },
   ]
 }
