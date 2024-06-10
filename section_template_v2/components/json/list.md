@@ -1,6 +1,6 @@
 # Render type `list` Properties only
 
-- The `Button` type please see [here](../json.md)
+- The `Button` type please see [here](./README.md)
 
 | Property             | Type                  | Description                                                             | Default | Required | Example                               |
 | -------------------- | --------------------- | ----------------------------------------------------------------------- | ------- | -------- | ------------------------------------- |

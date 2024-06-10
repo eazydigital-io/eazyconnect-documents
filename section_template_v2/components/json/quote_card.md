@@ -1,4 +1,4 @@
-# Render type `step` Properties only
+# Render type `quote_card` Properties only
 
 - The `FieldData` type please see [here](./README.md)
 
@@ -11,7 +11,6 @@
 | `showOnProductTypes` | `string[]`            | Show component on product types ...                                     |         | No       | `['motor', 'health']` |
 | `className`          | `string`              | Custom class name                                                       |         | No       | `text-primary`        |
 | `style`              | `React.CSSProperties` | Custom style                                                            |         | No       | `{ color: 'red' }`    |
-| `hiddenIcon`         | `boolean`             | For hide icon                                                           | `false` | No       |                       |
 | `left`               | `FieldData[]`         | For render left side of card                                            |         | Yes      |                       |
 | `right`              | `FieldData[]`         | For render right side of card                                           |         | No       |                       |
 
@@ -26,7 +25,6 @@
   "showOnStatus": ["draft", "submit"],
   "showOnProductTypes": ["motor", "health"],
   "renderType": "product_type_card",
-  "hiddenIcon": false,
   "left": [
     {
       "key": "productType.code",
@@ -43,5 +41,42 @@
     }
   ],
   "right": [{ "type": "blank" }, { "key": "status", "valueType": "status" }]
+}
+```
+
+### Example with buttons
+
+```json
+{
+  "key": "label_info",
+  "label": "Label Info",
+  "showOnStatus": ["draft", "submit"],
+  "showOnProductTypes": ["motor", "health"],
+  "renderType": "product_type_card",
+  "left": [
+    {
+      "key": "productType.code",
+      "valueType": "product_type",
+      "className": "text-xs text-primary font-semibold"
+    },
+    { "textTemplate": "${agency.firstName} ${agency.lastName}" },
+    { "key": "rfqNo", "valueType": "doc_no", "className": "text-primary" },
+    {
+      "key": "updatedAt",
+      "valueType": "date",
+      "label": "last_update",
+      "className": "text-[10px] text-gray-500"
+    },
+    {
+      "buttons": [...]
+    }
+  ],
+  "right": [
+    { "type": "blank" },
+    { "key": "status", "valueType": "status" },
+    {
+      "buttons": [...]
+    }
+  ]
 }
 ```

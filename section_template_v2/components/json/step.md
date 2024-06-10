@@ -1,6 +1,6 @@
 # Render type `step` Properties only
 
-- The `StepItem` type please see [here](../json.md)
+- The `StepItem` type please see [here](./README.md)
 
 | Property             | Type                  | Description                                                             | Default | Required | Example               |
 | -------------------- | --------------------- | ----------------------------------------------------------------------- | ------- | -------- | --------------------- |
