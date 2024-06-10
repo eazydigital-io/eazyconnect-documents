@@ -1,17 +1,18 @@
 # Render type `text` Properties only
 
-| Property             | Type                  | Description                                                            | Default | Required | Example                                |
-| -------------------- | --------------------- | ---------------------------------------------------------------------- | ------- | -------- | -------------------------------------- |
-| `key`                | `string`              | Key of the JSON data to component value *`key` must be snake_case only |         | Yes      | `agent.first_name`                     |
-| `label`              | `string`              | Label for component render                                             |         | No       |                                        |
-| `renderType`         | `RenderType`          | For select component to render                                         | `text`  | No       |                                        |
-| `valueType`          | `ValueType`           | Type of value to render                                                | `text`  | No       |                                        |
-| `defaultValue`       | `any`                 | Default value to render                                                |         | No       |                                        |
-| `textTemplate`       | `string`              | Text to render instead `key`                                           |         | No       | `${agent.firstName} ${agent.lastName}` |
-| `showOnStatus`       | `string[]`            | Show component on status ...                                           |         | No       | `['draft', 'submit']`                  |
-| `showOnProductTypes` | `string[]`            | Show component on product types ...                                    |         | No       | `['motor', 'health']`                  |
-| `className`          | `string`              | Custom class name                                                      |         | No       | `text-primary`                         |
-| `style`              | `React.CSSProperties` | Custom style                                                           |         | No       | `{ color: 'red' }`                     |
+| Property             | Type                  | Description                                                              | Default | Required | Example                                |
+| -------------------- | --------------------- | ------------------------------------------------------------------------ | ------- | -------- | -------------------------------------- |
+| `key`                | `string`              | Key of the JSON data to component value \*`key` must be snake_case only  |         | Yes      | `agent.first_name`                     |
+| `label`              | `string`              | Label for component render                                               |         | No       |                                        |
+| `renderType`         | `RenderType`          | For select component to render                                           | `text`  | No       |                                        |
+| `valueType`          | `ValueType`           | Type of value to render                                                  | `text`  | No       |                                        |
+| `to`                 | `string`              | The path uri for link redirect. (use for `doc_no` or `link` `valueType`) |         | No       | `/sales/rfqs/${id}`                    |
+| `defaultValue`       | `any`                 | Default value to render                                                  |         | No       |                                        |
+| `textTemplate`       | `string`              | Text to render instead `key`                                             |         | No       | `${agent.firstName} ${agent.lastName}` |
+| `showOnStatus`       | `string[]`            | Show component on status ...                                             |         | No       | `['draft', 'submit']`                  |
+| `showOnProductTypes` | `string[]`            | Show component on product types ...                                      |         | No       | `['motor', 'health']`                  |
+| `className`          | `string`              | Custom class name                                                        |         | No       | `text-primary`                         |
+| `style`              | `React.CSSProperties` | Custom style                                                             |         | No       | `{ color: 'red' }`                     |
 
 ## Example
 
@@ -27,7 +28,7 @@
 
 ```json
 {
-  "textTemplate": "${agent.firstName} ${agent.lastName}",
+  "textTemplate": "${agent.firstName} ${agent.lastName}"
 }
 ```
 

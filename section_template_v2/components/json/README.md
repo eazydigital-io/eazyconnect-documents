@@ -204,6 +204,7 @@ const product_type = "Motor";
 const doc_no = "#RFQ00001";
 
 // JSX value
+const doc_no = <Link to="/sales/...">#RFQ00001</Link>; // doc_no with `to` property
 const status = <Badge status="success">Success</Badge>;
 const tag = <Tag color="blue">Tag</Tag>;
 const image = <img src="https://example.com/image.jpg" alt="Image" />;
