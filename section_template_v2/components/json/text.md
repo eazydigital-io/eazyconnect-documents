@@ -9,6 +9,7 @@
 | `to`                 | `string`              | The path uri for link redirect. (use for `doc_no` or `link` `valueType`) |         | No       | `/sales/rfqs/${id}`                    |
 | `defaultValue`       | `any`                 | Default value to render                                                  |         | No       |                                        |
 | `textTemplate`       | `string`              | Text to render instead `key`                                             |         | No       | `${agent.firstName} ${agent.lastName}` |
+| `translate`          | `boolean`             | For translate the value \*use for `valueType` `text` only                |         | No       |                                        |
 | `showOnStatus`       | `string[]`            | Show component on status ...                                             |         | No       | `['draft', 'submit']`                  |
 | `showOnProductTypes` | `string[]`            | Show component on product types ...                                      |         | No       | `['motor', 'health']`                  |
 | `className`          | `string`              | Custom class name                                                        |         | No       | `text-primary`                         |
@@ -47,6 +48,18 @@
 ```json
 {
   "valueType": "price",
+  "className": "text-primary",
+  "style": {
+    "backgroundColor": "red"
+  }
+}
+```
+
+### Want to translate the value
+
+```json
+{
+  "translate": true,
   "className": "text-primary",
   "style": {
     "backgroundColor": "red"
