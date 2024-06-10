@@ -48,7 +48,7 @@
 
 ```json
 {
-  "renderType": "button",
+  "renderType": "label",
   "showOnStatus": ["draft", "processing"],
   "showOnProductTypes": ["motor", "health"],
 }
@@ -58,7 +58,7 @@
 
 ```json
 {
-  "renderType": "button",
+  "renderType": "label",
   "hiddenDivider": true
 }
 ```
@@ -67,7 +67,7 @@
 
 ```json
 {
-  "renderType": "button",
+  "renderType": "label",
   "center": true
 }
 ```

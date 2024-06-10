@@ -14,6 +14,7 @@ The JSON component is a customize component, used to display the custom componen
   - [file](./file.md)
   - [list](./list.md)
   - [step](./step.md)
+  - [quote_card](./quote_card.md)
   - [product_type_card](./product_type_card.md)
 - Input type
   - [input_product_type_card](./input_product_type_card.md)
