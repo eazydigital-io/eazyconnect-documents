@@ -161,7 +161,7 @@
       "label": "Download 3",
       "action": "download",
       "url": "https://eazy.com/downplad/${file.0.url}",
-      "fileName": "file.0.name"
+      "fileName": "${file.0.name}"
     },
   ]
 }
@@ -192,7 +192,7 @@
       "label": "Download 3",
       "action": "internal_download",
       "url": "https://eazy.com/downplad/${file.0.url}",
-      "fileName": "file.0.name"
+      "fileName": "${file.0.name}"
     },
   ]
 }
@@ -205,12 +205,27 @@
   - `entity_update` is used to update the entity with method `PUT`
   - `entity_patch` is used to update the entity with method `PATCH`
   - `entity_delete` is used to delete the entity with method `DELETE`
-- The url of the entity action will be the uri of the entity
-  - For example: `/approve`, `/reject`, `/cancel`
-  - The url can be the uri with the params `/approve/${id}`, `/reject/${id}`, `/cancel/${id}`
-  - For example result when uri is used in the code
-    - `/approve` will be `/eazy_rfq/${rfqNo}/approve`
-    - `/approve/${id}` will be `/eazy_rfq/${rfqNo}/approve/${id}`
+- The `path` will be the path of the entity
+  - For example: `/approve/${id}`, `/reject/${id}`, `/cancel/${id}` or `/remove`
+  - For example result when path is work
+    - `/approve/${id}` > `/eazy_rfq/approve/xxxxxx-xxxx-xxxx-xxxxxx`
+    - `/reject/${id}` > `/eazy_rfq/reject/xxxxxx-xxxx-xxxx-xxxxxx`
+    - `/cancel/${id}` > `/eazy_rfq/cancel/xxxxxx-xxxx-xxxx-xxxxxx`
+    - `/remove` > `/eazy_rfq/remove`
+- The value on the key object of `body` have to be the string javascript only
+  - because the value will be eval by the javascript
+  - in case just want to add the text value, please use single quote(***now 10/06/2567 unnecessary use single quote***)
+  - we can use text template in the string javascript
+  - The value from eval will begin with `data?.` and `data?.` will be the data from the current entity page
+  - In case use text template, the value will come from the `data?.` of the current entity page
+  - All Example below
+    - example current data 
+      - `{ id: "xxxxxx-xxxx-xxxx-xxxxxx", productType: { code: "motor" }, priceList: [{ id: "xxxx" }, ...] }`
+    - `"data?.product.code"` > `"motor"`
+    - `"data?.priceList?.map((p) => p.id)"` > `["xxxx", "zzzz", "cccc"]`
+    - `"confirmed"` > `"confirmed"`
+    - `"canceled"` > `"canceled"`
+    - `"${id}"` > `"xxxxxx-xxxx-xxxx-xxxxxx"`
 
 ```json
 {
@@ -219,25 +234,88 @@
     {
       "label": "Update",
       "action": "entity_update",
-      "url": "/approve",
+      "path": "/approve/${id}", // /current_entity/approve/xxxxxx-xxxx-xxxx-xxxxxx
       "body": { "status": "cancel" }
     },
     {
       "label": "Update 2",
       "action": "entity_update",
-      "url": "/approve/${id}",
-      "body": { "status": "processing" } // Now the body un-support text template and eval function
+      "path": "/reject/${id}", // /current_entity/reject/xxxxxx-xxxx-xxxx-xxxxxx
+      "body": { "productType": "${productType.code}" }
     },
     {
       "label": "Update 3",
       "action": "entity_patch",
-      "url": "/approve",
+      "path": "/cancel/${id}", // /current_entity/cancel/xxxxxx-xxxx-xxxx-xxxxxx
       "body": { "status": "cancel" }
     },
     {
       "label": "Delete",
       "action": "entity_delete",
-      "url": "/delete"
+      "path": "/remove/${id}", // /current_entity/remove/xxxxxx-xxxx-xxxx-xxxxxx
+    },
+  ]
+}
+```
+
+#### Use with `entityName`
+
+```json
+{
+  "renderType": "button",
+  "buttons": [
+    {
+      "label": "Update",
+      "action": "entity_update",
+      "entityName": "eazy_digital",
+      "path": "/approve/${id}", // /eazy_digital/approve/xxxxxx-xxxx-xxxx-xxxxxx
+      "body": { "status": "cancel" }
+    },
+    {
+      "label": "Update 2",
+      "action": "entity_update",
+      "entityName": "eazy_digital",
+      "path": "/reject/${id}", // /eazy_digital/reject/xxxxxx-xxxx-xxxx-xxxxxx
+      "body": { "productType": "'${productType.code}'" } // Use body with text template eval, use single quote
+    },
+    {
+      "label": "Update 3",
+      "action": "entity_patch",
+      "entityName": "eazy_digital",
+      "path": "/cancel/${id}", // /eazy_digital/cancel/xxxxxx-xxxx-xxxx-xxxxxx
+      "body": { "productType": "data?.productType.code" } // Use body with eval
+    },
+    {
+      "label": "Delete",
+      "action": "entity_delete",
+      "entityName": "eazy_digital",
+      "path": "/remove/${id}", // /eazy_digital/remove/xxxxxx-xxxx-xxxx-xxxxxx
+    },
+  ]
+}
+```
+
+#### Use with `redirectUri`
+
+```json
+{
+  "renderType": "button",
+  "buttons": [
+    {
+      "label": "Update",
+      "action": "entity_update",
+      "entityName": "eazy_digital",
+      "path": "/approve/${id}", // /eazy_digital/approve/xxxxxx-xxxx-xxxx-xxxxxx
+      "body": { "status": "cancel" },
+      "redirectUri": "/eazy_digital/${id}" // Redirect to /eazy_digital/xxxxxx-xxxx-xxxx-xxxxxx
+    },
+    {
+      "label": "Update 2",
+      "action": "entity_update",
+      "entityName": "eazy_digital",
+      "path": "/reject/${id}", // /eazy_digital/reject/xxxxxx-xxxx-xxxx-xxxxxx
+      "body": { "productType": "'${productType.code}'" }, // Use body with text template eval, use single quote
+      "redirectUri": "/eazy_digital/sales/rfqs" // Redirect to /eazy_digital/sales/rfqs
     },
   ]
 }

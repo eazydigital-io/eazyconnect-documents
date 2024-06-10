@@ -17,15 +17,20 @@ type Button = {
   variant?: 'solid' | 'outline' | 'ghost' // Default: 'solid'
   label?: string
   className?: string
-  action?: 'share' | 'download' | 'internal_download' | 'entity_update' | 'entity_patch' | 'entity_delete' | 'internal_submit'
+  action?: 'share' | 'download' | 'internal_download' | 'entity_update' | 'entity_patch' | 'entity_delete' | 'form_submit'
   icon?: FeatherIcon // Ex: 'FiX' | 'FiEdit' | 'FiCheck' | ...
   isIconLeft?: boolean
   width?: 'auto' | 'full' | 'wide' | 'fit'
+  confirmTitle?: string;
+  confirmDesc?: string;
+  entityName?: string
   url?: string
-  body?: any
-  fileName?: string
-  shareUrl?: string
-  shareMsg?: string
+  path?: string
+  redirectUri?: string
+  body?: object // The value on the key object, have to be the string javascript only. please see the example in the button.md
+  fileName?: string // can use text template (ex: `${file.0.name}`)
+  shareUrl?: string // can use text template (ex: `${url}`)
+  shareMsg?: string // can use text template (ex: `${msg}`)
   showOnStatus?: string[]
   showOnProductTypes?: string[]
   evalHidden?: string // This is a string javascript condition, In a code we will use `eval` to execute this condition
@@ -133,29 +138,6 @@ const blank = <div></div>
 | `showOnStatus`       | `string[]`   | Show component on status ...                                           |         | No       | `['draft', 'submit']`                  |
 | `showOnProductTypes` | `string[]`   | Show component on product types ...                                    |         | No       | `['motor', 'health']`                  |
 | `className`          | `string`     | Custom class name                                                      |         | No       | `text-primary`                         |
-
-### Render type `file` Properties only
-
-| Property           | Type               | Description                                    | Default | Required | Example |
-| ------------------ | ------------------ | ---------------------------------------------- | ------- | -------- | ------- |
-| `keyByProductType` | `KeyByProductType` | For get custom file url from each Product type |         | No       |         |
-
-#### Possible Properties of Render type `file`
-
-```json
-{
-  "key": "label_info",
-  "label": "Label Info",
-  "showOnStatus": ["draft", "submit"], // Can `Undefined`
-  "showOnProductTypes": ["motor", "health"], // Can `Undefined`
-  "className": "text-primary", // Can `Undefined`
-  "renderType": "file", // Required
-  "keyByProductType": {
-    "motor": "file_url_motor.0.url",
-    "health": "file_url_health.0.url"
-  },
-}
-```
 
 ### Render type `list` Properties only
 
