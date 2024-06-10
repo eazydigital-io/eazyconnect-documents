@@ -9,15 +9,15 @@ Use the JSON Component to Render a Component in the Agent V2.
 ### Types
 
 ```ts
-type RenderType = 'text' | 'label' | 'button' | 'file' | 'list' | 'step' | 'product_type_card'
-type ValueType = 'text' | 'date' | 'date_time' | 'date_status' | 'number' | 'number_no_digit' | 'short_number' | 'price' | 'price_no_digit' | 'short_price' | 'currency' | 'currency_no_digit' | 'short_currency' | 'product_type' | 'status' | 'tag' | 'doc_no' | 'image' | 'file' | 'link' | 'blank'
+type RenderType = 'text' | 'label' | 'button' | 'file' | 'list' | 'step' | 'product_type_card' | 'input_product_type_card' | 'input_select'
+type ValueType = 'text' | 'date' | 'date_time' | 'date_status' | 'number' | 'number_no_digit' | 'short_number' | 'price' | 'price_no_digit' | 'short_price' | 'currency' | 'currency_no_digit' | 'short_currency' | 'product_type' | 'status' | 'tag' | 'doc_no' | 'percent' | 'boolean_icon' | 'image' | 'file' | 'link' | 'blank'
 
 type Button = {
   color?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark' | 'white' // Default: 'primary'
   variant?: 'solid' | 'outline' | 'ghost' // Default: 'solid'
   label?: string
   className?: string
-  action?: 'share' | 'download' | 'internal_download' | 'entity_update' | 'entity_patch' | 'entity_delete'
+  action?: 'share' | 'download' | 'internal_download' | 'entity_update' | 'entity_patch' | 'entity_delete' | 'internal_submit'
   icon?: FeatherIcon // Ex: 'FiX' | 'FiEdit' | 'FiCheck' | ...
   isIconLeft?: boolean
   width?: 'auto' | 'full' | 'wide' | 'fit'
@@ -28,7 +28,10 @@ type Button = {
   shareMsg?: string
   showOnStatus?: string[]
   showOnProductTypes?: string[]
-  eval?: string // This is a string javascript condition, In a code we will use `eval` to execute this condition
+  evalHidden?: string // This is a string javascript condition, In a code we will use `eval` to execute this condition
+  evalDisabled?: string // This is a string javascript condition, In a code we will use `eval` to execute this condition
+  style?: React.CSSProperties
+  className?: string
 }
 
 type KeyByProductType = {
@@ -58,14 +61,31 @@ type ListAction = {
   create?: boolean
 }
 
+type ListActionDisabled = {
+  view?: string
+  create?: string
+}
+
 type StepItem = {
   title: string
+  oneLineTitle?: boolean
   subTitle?: string
   subTitleValueType?: ValueType
   icon?: FeatherIcon // Ex: 'FiX' | 'FiEdit' | 'FiCheck' | ...
   showOnStatus?: string[]
   showOnProductTypes?: string[]
-  completedCondition?: string // This is a string javascript condition, In a code we will use `eval` to execute this condition
+  evalIsCompleted?: string // This is a string javascript condition, In a code we will use `eval` to execute this condition
+}
+
+type DefaultInputProperties = {
+  key: string
+  label?: string
+  placeholder?: string
+  center?: boolean
+  disabled?: boolean
+  evalDisabled?: string // This is a string javascript condition, In a code we will use `eval` to execute this condition
+  defaultValue?: any
+  evalDefaultValue?: string // This is a string javascript condition, In a code we will use `eval` to execute this condition
 }
 ```
 
@@ -86,6 +106,7 @@ const short_price = '$ 123K'
 const currency = 'USD 123,456.00'
 const currency_no_digit = 'USD 123,456'
 const short_currency = 'USD 123K'
+const percent = '123%'
 const product_type = 'Motor'
 const doc_no = '#RFQ00001'
 
@@ -95,6 +116,8 @@ const tag = <Tag color="blue">Tag</Tag>
 const image = <img src="https://example.com/image.jpg" alt="Image" />
 const file = <img src="https://example.com/file.jpg" alt="File" />
 const link = <a href="https://example.com" target="_blank">Link</a>
+const boolean_icon = <Icon name="check"/> // true
+const boolean_icon = <Icon name="x"/> // false
 const blank = <div></div>
 ```
 
@@ -110,135 +133,6 @@ const blank = <div></div>
 | `showOnStatus`       | `string[]`   | Show component on status ...                                           |         | No       | `['draft', 'submit']`                  |
 | `showOnProductTypes` | `string[]`   | Show component on product types ...                                    |         | No       | `['motor', 'health']`                  |
 | `className`          | `string`     | Custom class name                                                      |         | No       | `text-primary`                         |
-
-### Render type `text` Properties only
-
-| Property    | Type        | Description             | Default | Required | Example |
-| ----------- | ----------- | ----------------------- | ------- | -------- | ------- |
-| `valueType` | `ValueType` | Type of value to render | `text`  | No       |         |
-
-#### Possible Properties of Render type `text`
-
-```json
-{
-  "key": "agent.first_name",
-  "label": "First Name",
-  "renderType": "text", // Can `Undefined`
-  "defaultValue": "John Doe", // Can `Undefined`
-  "textTemplate": "${agent.firstName} ${agent.lastName}", // Can `Undefined`
-  "showOnStatus": ["draft", "submit"], // Can `Undefined`
-  "showOnProductTypes": ["motor", "health"], // Can `Undefined`
-  "className": "text-primary" // Can `Undefined`
-}
-```
-
-### Render type `button` Properties only
-
-| Property  | Type       | Description       | Default | Required | Example |
-| --------- | ---------- | ----------------- | ------- | -------- | ------- |
-| `buttons` | `Button[]` | For render button |         | No       |         |
-
-#### Possible Properties of Render type `button`
-
-```json
-{
-  "renderType": "label", // Required
-  "showOnStatus": ["draft", "submit"], // Can `Undefined`
-  "showOnProductTypes": ["motor", "health"], // Can `Undefined`
-  "className": "text-black", // Can `Undefined`
-  "buttons": [
-    // Ex: Button `download`
-    {
-      "className": "btn-white", // Can `Undefined`
-      "action": "download", // Download file by URL in the JSON data
-      "url": "https://example.com/download", // May be you can use key in the JSON data to get the URL
-      "fileName": "example.pdf" // May be you can use key in the JSON data to get the URL
-    },
-    // Ex: Button `internal_download`
-    {
-      "className": "btn-white", // Can `Undefined`
-      "action": "internal_download", // Download file by URL in the JSON data passed to the Core API
-      "url": "${file.0.url}", // May be you can use key in the JSON data to get the URL
-      "fileName": "${file.0.name}" // May be you can use key in the JSON data to get the URL
-    },
-    // Ex: Button `share`
-    {
-      "className": "btn-white", // Can `Undefined`
-      "action": "share", // Share button can copy URL to clipboard
-      "shareUrl": "${file.0.url}", // May be you can use key in the JSON data to get the URL
-      "shareMsg": "${file.0.name}" // May be you can use key in the JSON data to get the URL
-    },
-    // Ex: General Button
-    {
-      "label": "Button Label", // Can `Undefined`
-      "className": "btn-white", // Can `Undefined`
-      "icon": "FiX", // Can `Undefined`
-      "isIconLeft": true, // Can `Undefined`
-      "width": "full", // Can `Undefined`
-    },
-    // Ex: Entity Action Button
-    {
-      "label": "Button Label", // Can `Undefined`
-      "icon": "FiX", // Can `Undefined`
-      "color": "secondary", // Can `Undefined`
-      "variant": "outline", // Can `Undefined`
-      "action": "entity_update", // Update entity data
-      "url": "/approve", // Can `Undefined` (Ex Result: /${entity_name}/${id}/approve)
-      "body": { "status": "completed" } // Body to update entity data
-    },
-    {
-      "label": "Button Label", // Can `Undefined`
-      "icon": "FiX", // Can `Undefined`
-      "color": "warning", // Can `Undefined`
-      "variant": "ghost", // Can `Undefined`
-      "action": "entity_patch", // Patch entity data
-      "url": undefined, // Can `Undefined` (Ex Result: /${entity_name}/${id})
-      "body": { "status": "completed" } // Body to patch entity data
-    },
-    {
-      "label": "Button Label", // Can `Undefined`
-      "icon": "FiX", // Can `Undefined`
-      "color": "danger", // Can `Undefined`
-      "variant": "solid", // Can `Undefined`
-      "url": "/remove/example", // Can `Undefined` (Ex Result: /${entity_name}/${id}/remove/example)
-      "action": "entity_delete" // Delete entity data
-    },
-  ]
-}
-```
-
-### Render type `label` Properties only
-
-| Property  | Type       | Description                             | Default | Required | Example |
-| --------- | ---------- | --------------------------------------- | ------- | -------- | ------- |
-| `buttons` | `Button[]` | For render button to the right of label |         | No       |         |
-
-#### Possible Properties of Render type `label`
-
-```json
-// Ex: Label only
-{
-  "key": "label_info",
-  "label": "Label Info",
-  "showOnStatus": ["draft", "submit"], // Can `Undefined`
-  "showOnProductTypes": ["motor", "health"], // Can `Undefined`
-  "className": "text-primary", // Can `Undefined`
-  "renderType": "label", // Required
-}
-
-// Ex: Label with buttons
-{
-  "key": "label_info",
-  "label": "Label Info",
-  "showOnStatus": ["draft", "submit"], // Can `Undefined`
-  "showOnProductTypes": ["motor", "health"], // Can `Undefined`
-  "className": "text-primary", // Can `Undefined`
-  "renderType": "label", // Required
-  "buttons": [
-    ... // Refer to Render type `button` Properties only
-  ]
-}
-```
 
 ### Render type `file` Properties only
 
@@ -265,17 +159,18 @@ const blank = <div></div>
 
 ### Render type `list` Properties only
 
-| Property          | Type                 | Description                             | Default | Required | Example                   |
-| ----------------- | -------------------- | --------------------------------------- | ------- | -------- | ------------------------- |
-| `action`          | `ListAction`         | For render action button                |         | No       |                           |
-| `entityName`      | `string`             | Entity name to get data                 |         | Yes      | `eazy_rfq`                |
-| `entityStrFilter` | `string`             | Entity filter string(query string url)  |         | No       | `$and[0][rfq][$in]=${id}` |
-| `entityLimit`     | `number`             | Limit of entity data                    | `10`    | No       |                           |
-| `entityFields`    | `string[]`           | Fields to get from entity               |         | No       |                           |
-| `entitySort`      | `string`             | Sort of entity data                     |         | No       |                           |
-| `toView`          | `string`             | URL to click view entity data           |         | No       | `/sales/policies/${id}`   |
-| `displayField`    | `FieldDataForList[]` | Fields to display in the list           |         | Yes      |                           |
-| `buttons`         | `Button[]`           | For render button to the right of label |         | No       |                           |
+| Property             | Type                 | Description                             | Default | Required | Example                               |
+| -------------------- | -------------------- | --------------------------------------- | ------- | -------- | ------------------------------------- |
+| `action`             | `ListAction`         | For render action button                |         | No       | `{ "create": true }`                  |
+| `evalActionDisabled` | `ListActionDisabled` | For disable action button               |         | No       | `{ "create": "${type} === 'motor'" }` |
+| `entityName`         | `string`             | Entity name to get data                 |         | Yes      | `eazy_rfq`                            |
+| `entityStrFilter`    | `string`             | Entity filter string(query string url)  |         | No       | `$and[0][rfq][$in]=${id}`             |
+| `entityLimit`        | `number`             | Limit of entity data                    | `10`    | No       |                                       |
+| `entityFields`       | `string[]`           | Fields to get from entity               |         | No       |                                       |
+| `entitySort`         | `string`             | Sort of entity data                     |         | No       |                                       |
+| `toView`             | `string`             | URL to click view entity data           |         | No       | `/sales/policies/${id}`               |
+| `displayField`       | `FieldDataForList[]` | Fields to display in the list           |         | Yes      |                                       |
+| `buttons`            | `Button[]`           | For render button to the right of label |         | No       |                                       |
 
 #### Possible Properties of Render type `list`
 
@@ -290,6 +185,10 @@ const blank = <div></div>
   "action": {
     "view": true, // Can `Undefined`
     "create": true, // Can `Undefined`
+  }, // Can `Undefined`
+  "evalActionDisabled": {
+    "view": "${type} === 'motor'", // Can `Undefined`
+    "create": "${type} === 'motor'", // Can `Undefined`
   }, // Can `Undefined`
   "entityName": "eazy_rfq", // Required
   "entityStrFilter": "$and[0][rfq][$in]=${id}", // Can `Undefined`
@@ -328,7 +227,7 @@ const blank = <div></div>
       "title": "Title",
       "subTitle": "Sub Title",
       "icon": "FiCheck", // Can `Undefined`
-      "completedCondition": "['submit', 'processing', 'completed', 'canceled'].includes('${status}')" // Can `Undefined`
+      "evalIsCompleted": "['submit', 'processing', 'completed', 'canceled'].includes('${status}')" // Can `Undefined`
     },
     {
       "title": "Title 2",
@@ -336,7 +235,7 @@ const blank = <div></div>
       "subTitleValueType": "number", // Can `Undefined`
       "icon": "FiCheck", // Can `Undefined`
       "showOnStatus": ["new","submit","processing","completed"], // Can `Undefined`
-      "completedCondition": "['processing', 'completed'].includes('${status}')" // Can `Undefined`
+      "evalIsCompleted": "['processing', 'completed'].includes('${status}')" // Can `Undefined`
     },
     {
       "title": "Title 3",
@@ -344,7 +243,7 @@ const blank = <div></div>
       "subTitleValueType": "doc_no", // Can `Undefined`
       "icon": "FiCheck", // Can `Undefined`
       "showOnStatus": ["canceled"], // Can `Undefined`
-      "completedCondition": "!!'${process_date}'" // Can `Undefined`
+      "evalIsCompleted": "!!'${process_date}'" // Can `Undefined`
     },
     {
       "title": "Title 4",
@@ -352,7 +251,7 @@ const blank = <div></div>
       "subTitleValueType": "date", // Can `Undefined`
       "icon": "FiCheck", // Can `Undefined`
       "showOnStatus": ["new","submit","processing","completed"], // Can `Undefined`
-      "completedCondition": "!!'${completedDate}'" // Can `Undefined`
+      "evalIsCompleted": "!!'${completedDate}'" // Can `Undefined`
     },
   ],
 }
