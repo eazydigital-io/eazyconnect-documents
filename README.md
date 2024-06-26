@@ -9,5 +9,6 @@ The documents store for EazyConnect application
   - [Component](./section_template_v2/components)
     - [README First](./section_template_v2/components/README.md)
     - [Component Json](./section_template_v2/components/json/README.md)
+    - [Component Input Text](./section_template_v2/components/input_text.md)
     - [Component Label](./section_template_v2/components/label.md)
     - [Component Button](./section_template_v2/components/button.md)
