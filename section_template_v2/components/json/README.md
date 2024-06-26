@@ -12,45 +12,58 @@ Use the JSON Component to Render a Component in the Agent V2.
 ## Table of Contents
 
 - Display type
-  - [Alert](./alert.md)
-  - [Button](./button.md)
-  - [Divider](./divider.md)
-  - [File](./file.md)
-  - [Label](./label.md)
-  - [List Select Card](./list_select_card.md)
-  - [List Log](./list_log.md)
-  - [List](./list.md)
-  - [Product Type Card](./product_type_card.md)
-  - [Quote Card](./quote_card.md)
-  - [Step](./step.md)
-  - [Text](./text.md)
+  - [Alert](./display/alert.md)
+  - [Button](./display/button.md)
+  - [Divider](./display/divider.md)
+  - [File](./display/file.md)
+  - [Grid View Card](./display/grid_view_card.md)
+  - [Label](./display/label.md)
+  - [List Expand Card](./display/list_expand_card.md)
+  - [List Log](./display/list_log.md)
+  - [List Select Card](./display/list_select_card.md)
+  - [List](./display/list.md)
+  - [Product Type Card](./display/product_type_card.md)
+  - [Quote Card](./display/quote_card.md)
+  - [Quote Grid Card](./display/quote_grid_card.md)
+  - [Step](./display/step.md)
+  - [Text](./display/text.md)
 - Input type
-  - [Input Date](./input_date.md)
-  - [Input Product Type Card](./input_product_type_card.md)
-  - [Input Select](./input_select.md)
-  - [Input Text Area](./input_textarea.md)
-  - [Input Text](./input_text.md)
-  - [Input Upload](./input_upload_.md)
+  - [Input Date](./input/input_date.md)
+  - [Input Product Type Card](./input/input_product_type_card.md)
+  - [Input Select](./input/input_select.md)
+  - [Input Text](./input/input_text.md)
+  - [Input Text Area](./input/input_textarea.md)
+  - [Input Upload](./input/input_upload_.md)
 
 ### Types
 
 ```ts
+type SemanticColor =
+  | "default"
+  | "primary"
+  | "secondary"
+  | "success"
+  | "danger"
+  | "warning";
 type RenderType =
-  | "text"
-  | "label"
+  | "alert"
   | "button"
+  | "divider"
   | "file"
-  | "list"
-  | "step"
-  | "product_type_card"
+  | "label"
+  | "list_log"
   | "list_select_card"
+  | "list"
+  | "product_type_card"
   | "quote_card"
+  | "step"
+  | "text"
   | "input_product_type_card"
   | "input_select"
   | "input_text"
   | "input_textarea"
   | "input_upload"
-  | "input_date"
+  | "input_date";
 type ValueType =
   | "text"
   | "date"
@@ -94,15 +107,15 @@ type Button = {
   action?:
     | "back"
     | "clone"
-    | "share"
     | "download"
+    | "entity_create"
+    | "entity_delete"
+    | "entity_patch"
+    | "entity_update"
+    | "form_submit"
     | "internal_download"
     | "redirect"
-    | "entity_create"
-    | "entity_update"
-    | "entity_patch"
-    | "entity_delete"
-    | "form_submit";
+    | "share";
   icon?: FeatherIcon; // Ex: 'FiX' | 'FiEdit' | 'FiCheck' | ...
   isIconLeft?: boolean;
   width?: "auto" | "full" | "wide" | "fit";
@@ -131,6 +144,7 @@ type KeyByProductType = {
 type FieldDataForList = {
   key: string;
   label?: string;
+  suffix?: string;
   textTemplate?: string; // Ex: `${agent.firstName} ${agent.lastName}`
   type?: ValueType; // Default: 'text'
   className?: string;
@@ -145,6 +159,11 @@ type FieldData = {
   className?: string;
   style?: React.CSSProperties;
   buttons?: Button[];
+};
+
+type GridViewItem = {
+  title?: string;
+  items?: FieldData[];
 };
 
 type ListAction = {
@@ -185,8 +204,25 @@ type ListSelectCardOption = {
   rightTitleKey: string;
   rightTitleType?: ValueType;
   attributeKey?: string;
-  evalDisabled?: string;
-  evalSelected?: string;
+  disabled?: boolean;
+  evalForceDisabled?: string;
+  evalDefaultSelected?: string;
+  defaultSelected?: string;
+};
+
+type CardSelectItem = {
+  key?: string;
+  value: string;
+  label: string;
+  icon?: FeatherIcon; // Ex: 'FiX' | 'FiEdit' | 'FiCheck' | ...
+};
+
+type SelectItem = {
+  key: string;
+  value: string;
+  label: string;
+} & {
+  [key in string]: string | number;
 };
 ```
 

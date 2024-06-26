@@ -1,6 +1,6 @@
-# Render type `quote_card` Properties only
+# Render type `quote_grid_card` Properties only
 
-- The `FieldData` type please see [here](./README.md)
+- The `FieldData` type please see [here](../README.md)
 
 | Property             | Type                  | Description                                                             | Default | Required | Example               |
 | -------------------- | --------------------- | ----------------------------------------------------------------------- | ------- | -------- | --------------------- |
@@ -11,8 +11,9 @@
 | `showOnProductTypes` | `string[]`            | Show component on product types ...                                     |         | No       | `['motor', 'health']` |
 | `className`          | `string`              | Custom class name                                                       |         | No       | `text-primary`        |
 | `style`              | `React.CSSProperties` | Custom style                                                            |         | No       | `{ color: 'red' }`    |
-| `left`               | `FieldData[]`         | For render left side of card                                            |         | Yes      |                       |
-| `right`              | `FieldData[]`         | For render right side of card                                           |         | No       |                       |
+| `items`              | `FieldData[]`         | For render items of card                                                |         | Yes      |                       |
+| `isHeadView`         | `boolean`             | Show just head and hidden value                                         |         | No       |                       |
+| `hiddenBg`           | `boolean`             | Hidden Background                                                       |         | No       |                       |
 
 ## Example
 
@@ -24,8 +25,8 @@
   "label": "Label Info",
   "showOnStatus": ["draft", "submit"],
   "showOnProductTypes": ["motor", "health"],
-  "renderType": "product_type_card",
-  "left": [
+  "renderType": "quote_grid_card",
+  "items": [
     {
       "key": "productType.code",
       "valueType": "product_type",
@@ -39,8 +40,7 @@
       "label": "last_update",
       "className": "text-[10px] text-gray-500"
     }
-  ],
-  "right": [{ "type": "blank" }, { "key": "status", "valueType": "status" }]
+  ]
 }
 ```
 
@@ -52,8 +52,8 @@
   "label": "Label Info",
   "showOnStatus": ["draft", "submit"],
   "showOnProductTypes": ["motor", "health"],
-  "renderType": "product_type_card",
-  "left": [
+  "renderType": "quote_grid_card",
+  "items": [
     {
       "key": "productType.code",
       "valueType": "product_type",
@@ -70,13 +70,30 @@
     {
       "buttons": [...]
     }
-  ],
-  "right": [
-    { "type": "blank" },
-    { "key": "status", "valueType": "status" },
-    {
-      "buttons": [...]
-    }
   ]
+}
+```
+
+### Example show just header label
+
+```json
+{
+  "key": "label_info",
+  "label": "Label Info",
+  "renderType": "quote_grid_card",
+  "items": [{ "label": "Policy No" }, { "label": "New Policy No" }],
+  "isHeadView": true
+}
+```
+
+### Example hidden background
+
+```json
+{
+  "key": "label_info",
+  "label": "Label Info",
+  "renderType": "quote_grid_card",
+  "items": [{ "label": "Policy No" }, { "label": "New Policy No" }],
+  "hiddenBg": true
 }
 ```

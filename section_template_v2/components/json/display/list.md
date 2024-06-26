@@ -1,6 +1,6 @@
 # Render type `list` Properties only
 
-- The `Button` type please see [here](./README.md)
+- The `Button` type please see [here](../README.md)
 
 | Property             | Type                  | Description                                                             | Default | Required | Example                               |
 | -------------------- | --------------------- | ----------------------------------------------------------------------- | ------- | -------- | ------------------------------------- |
@@ -11,15 +11,17 @@
 | `showOnProductTypes` | `string[]`            | Show component on product types ...                                     |         | No       | `['motor', 'health']`                 |
 | `className`          | `string`              | Custom class name                                                       |         | No       | `text-primary`                        |
 | `style`              | `React.CSSProperties` | Custom style                                                            |         | No       | `{ color: 'red' }`                    |
+| `showOnLength`       | `boolean`             | Show when length more than 0                                            |         | No       |                                       |
 | `action`             | `ListAction`          | For render action button                                                |         | No       | `{ "create": true }`                  |
 | `evalActionDisabled` | `ListActionDisabled`  | For disable action button                                               |         | No       | `{ "create": "${type} === 'motor'" }` |
 | `entityName`         | `string`              | Entity name to get data                                                 |         | Yes      | `eazy_rfq`                            |
-| `entityStrFilter`    | `string`              | Entity filter string(query string url)                                  |         | No       | `$and[0][rfq][$in]=${id}`             |
+| `entityQsFilter`     | `string`              | Entity filter string(query string url)                                  |         | No       | `$and[0][rfq][$in]=${id}`             |
 | `entityLimit`        | `number`              | Limit of entity data                                                    | `10`    | No       |                                       |
 | `entityFields`       | `string[]`            | Fields to get from entity                                               |         | No       |                                       |
 | `entitySort`         | `string`              | Sort of entity data                                                     |         | No       |                                       |
 | `toView`             | `string`              | URL to click view entity data                                           |         | No       | `/sales/policies/${id}`               |
 | `displayField`       | `FieldDataForList[]`  | Fields to display in the list                                           |         | Yes      |                                       |
+| `fieldFocus`         | `FieldDataForList`    | Fields to display in right of card list                                 |         | no       |                                       |
 | `buttons`            | `Button[]`            | For render button to the right of label                                 |         | No       |                                       |
 
 ## Example
@@ -31,7 +33,7 @@
   "renderType": "list",
   "action": {
     "view": true,
-    "create": true,
+    "create": true
   },
   "entityName": "eazy_digital",
   "displayField": [
@@ -46,6 +48,7 @@
 ```json
 {
   "renderType": "list",
+  "showOnLength": true,
   "showOnStatus": ["draft", "processing"],
   "showOnProductTypes": ["motor", "health"]
 }
@@ -58,7 +61,7 @@
   "renderType": "list",
   "action": {
     "view": true,
-    "create": true,
+    "create": true
   },
   "entityName": "eazy_digital",
   "displayField": [
@@ -67,13 +70,13 @@
   ],
   "evalActionDisabled": {
     "view": "${type} === 'motor'",
-    "create": "${type} === 'motor'",
+    "create": "${type} === 'motor'"
   },
-  "entityStrFilter": "$and[0][rfq][$in]=${id}",
+  "entityQsFilter": "$and[0][rfq][$in]=${id}",
   "entityLimit": 10,
-  "entityFields": ["id","status","rfq_no","updatedAt"],
+  "entityFields": ["id", "status", "rfq_no", "updatedAt"],
   "entitySort": "updatedAt=desc",
-  "toView": "/sales/policies/${id}",
+  "toView": "/sales/policies/${id}"
 }
 ```
 
@@ -95,7 +98,7 @@
     "view": "${type} === 'motor'",
     "create": "${type} === 'motor'",
   },
-  "entityStrFilter": "$and[0][rfq][$in]=${id}",
+  "entityQsFilter": "$and[0][rfq][$in]=${id}",
   "entityLimit": 10,
   "entityFields": ["id","status","rfq_no","updatedAt"],
   "entitySort": "updatedAt=desc",

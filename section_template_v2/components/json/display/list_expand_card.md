@@ -1,10 +1,10 @@
-# Render type `list_select_card` Properties only
+# Render type `list_expand_card` Properties only
 
-- The `ListSelectCardOption` type please see [here](./README.md)
+- The `Button`, `ListSelectCardOption` type please see [here](../README.md)
 
 ## Description
 
-The `list_select_card` component is used to render a list of data from the entity OR from the `data?.${key}` of the current entity page
+The `list_expand_card` component is used to render a list of data from the entity OR from the `data?.${key}` of the current entity page
 
 - **_In case you want to use the list from the `data?.${key}` you just remove the `entityName` properties_**
 
@@ -17,16 +17,18 @@ The `list_select_card` component is used to render a list of data from the entit
 | `showOnProductTypes` | `string[]`               | Show component on product types ...                                     |         | No       | `['motor', 'health']`                 |
 | `className`          | `string`                 | Custom class name                                                       |         | No       | `text-primary`                        |
 | `style`              | `React.CSSProperties`    | Custom style                                                            |         | No       | `{ color: 'red' }`                    |
+| `showOnLength`       | `boolean`                | Show when length more than 0                                            |         | No       |                                       |
 | `action`             | `ListAction`             | For render action button                                                |         | No       | `{ "create": true }`                  |
 | `evalActionDisabled` | `ListActionDisabled`     | For disable action button                                               |         | No       | `{ "create": "${type} === 'motor'" }` |
 | `entityName`         | `string`                 | Entity name to get data                                                 |         | Yes      | `eazy_rfq`                            |
-| `entityStrFilter`    | `string`                 | Entity filter string(query string url)                                  |         | No       | `$and[0][rfq][$in]=${id}`             |
+| `entityQsFilter`     | `string`                 | Entity filter string(query string url)                                  |         | No       | `$and[0][rfq][$in]=${id}`             |
 | `entityLimit`        | `number`                 | Limit of entity data                                                    | `10`    | No       |                                       |
 | `entityFields`       | `string[]`               | Fields to get from entity                                               |         | No       |                                       |
 | `entitySort`         | `string`                 | Sort of entity data                                                     |         | No       |                                       |
 | `evalDisabledAll`    | `string`                 | For disabled all selectable                                             |         | No       | `!data?.priceList?.length`            |
 | `cardOption`         | `ListSelectCardOption[]` | Option to display in the list                                           |         | Yes      |                                       |
 | `buttons`            | `Button[]`               | For render button to the right of label                                 |         | No       |                                       |
+| `lazyLoad`           | `boolean`                | When you want to list is lazy load                                      |         | No       |                                       |
 
 ## Example
 
@@ -36,15 +38,13 @@ The `list_select_card` component is used to render a list of data from the entit
 
 ```json
 {
-  "renderType": "list_select_card",
+  "renderType": "list_expand_card",
   "cardOption": {
     "titleKey": "product",
     "titleType": "text",
     "rightTitleKey": "price",
     "rightTitleType": "price",
-    "attributeKey": "relatedProduct.attributes",
-    "evalDisabled": "!!item?.quotationRef",
-    "evalSelected": "!!item?.quotationRef"
+    "attributeKey": "relatedProduct.attributes"
   }
 }
 ```
@@ -53,7 +53,7 @@ The `list_select_card` component is used to render a list of data from the entit
 
 ```json
 {
-  "renderType": "list_select_card",
+  "renderType": "list_expand_card",
   "action": {
     "create": true
   },
@@ -63,9 +63,7 @@ The `list_select_card` component is used to render a list of data from the entit
     "titleType": "text",
     "rightTitleKey": "price",
     "rightTitleType": "price",
-    "attributeKey": "relatedProduct.attributes",
-    "evalDisabled": "!!item?.quotationRef",
-    "evalSelected": "!!item?.quotationRef"
+    "attributeKey": "relatedProduct.attributes"
   }
 }
 ```
@@ -74,7 +72,8 @@ The `list_select_card` component is used to render a list of data from the entit
 
 ```json
 {
-  "renderType": "list_select_card",
+  "renderType": "list_expand_card",
+  "showOnLength": true,
   "showOnStatus": ["draft", "processing"],
   "showOnProductTypes": ["motor", "health"]
 }
@@ -84,7 +83,7 @@ The `list_select_card` component is used to render a list of data from the entit
 
 ```json
 {
-  "renderType": "list_select_card",
+  "renderType": "list_expand_card",
   "action": {
     "create": true
   },
@@ -94,9 +93,7 @@ The `list_select_card` component is used to render a list of data from the entit
     "titleType": "text",
     "rightTitleKey": "price",
     "rightTitleType": "price",
-    "attributeKey": "relatedProduct.attributes",
-    "evalDisabled": "!!item?.quotationRef",
-    "evalSelected": "!!item?.quotationRef"
+    "attributeKey": "relatedProduct.attributes"
   },
   "evalActionDisabled": {
     "create": "${type} === 'motor'"
@@ -104,7 +101,7 @@ The `list_select_card` component is used to render a list of data from the entit
   "entityStrFilter": "$and[0][rfq][$in]=${id}",
   "entityLimit": 10,
   "entityFields": ["id", "status", "rfq_no", "updatedAt"],
-  "entitySort": "updatedAt=desc",
+  "entitySort": "updatedAt=desc"
 }
 ```
 
@@ -112,7 +109,7 @@ The `list_select_card` component is used to render a list of data from the entit
 
 ```json
 {
-  "renderType": "list_select_card",
+  "renderType": "list_expand_card",
   "action": {
     "create": true,
   },
@@ -122,9 +119,7 @@ The `list_select_card` component is used to render a list of data from the entit
     "titleType": "text",
     "rightTitleKey": "price",
     "rightTitleType": "price",
-    "attributeKey": "relatedProduct.attributes",
-    "evalDisabled": "!!item?.quotationRef",
-    "evalSelected": "!!item?.quotationRef"
+    "attributeKey": "relatedProduct.attributes"
   },
   "evalActionDisabled": {
     "view": "${type} === 'motor'",
@@ -135,5 +130,22 @@ The `list_select_card` component is used to render a list of data from the entit
   "entityFields": ["id","status","rfq_no","updatedAt"],
   "entitySort": "updatedAt=desc",
   "buttons": [...]
+}
+```
+
+### Simple with lazy load
+
+```json
+{
+  "renderType": "list_expand_card",
+  "lazyLoad": true,
+  "entityName": "eazy_digital",
+  "cardOption": {
+    "titleKey": "product",
+    "titleType": "text",
+    "rightTitleKey": "price",
+    "rightTitleType": "price",
+    "attributeKey": "relatedProduct.attributes"
+  }
 }
 ```

@@ -1,6 +1,6 @@
 # Render type `step` Properties only
 
-- The `FieldData` type please see [here](./README.md)
+- The `StepItem` type please see [here](../README.md)
 
 | Property             | Type                  | Description                                                             | Default | Required | Example               |
 | -------------------- | --------------------- | ----------------------------------------------------------------------- | ------- | -------- | --------------------- |
@@ -11,9 +11,7 @@
 | `showOnProductTypes` | `string[]`            | Show component on product types ...                                     |         | No       | `['motor', 'health']` |
 | `className`          | `string`              | Custom class name                                                       |         | No       | `text-primary`        |
 | `style`              | `React.CSSProperties` | Custom style                                                            |         | No       | `{ color: 'red' }`    |
-| `hiddenIcon`         | `boolean`             | For hide icon                                                           | `false` | No       |                       |
-| `left`               | `FieldData[]`         | For render left side of card                                            |         | Yes      |                       |
-| `right`              | `FieldData[]`         | For render right side of card                                           |         | No       |                       |
+| `steps`              | `StepItem[]`          | For render step                                                         |         | Yes      |                       |
 
 ## Example
 
@@ -23,25 +21,41 @@
 {
   "key": "label_info",
   "label": "Label Info",
-  "showOnStatus": ["draft", "submit"],
-  "showOnProductTypes": ["motor", "health"],
-  "renderType": "product_type_card",
-  "hiddenIcon": false,
-  "left": [
+  "showOnStatus": ["draft", "submit"], // Can `Undefined`
+  "showOnProductTypes": ["motor", "health"], // Can `Undefined`
+  "className": "text-primary", // Can `Undefined`
+  "renderType": "step", // Required
+  "steps": [
     {
-      "key": "productType.code",
-      "valueType": "product_type",
-      "className": "text-xs text-primary font-semibold"
+      "title": "Title",
+      "subTitle": "Sub Title",
+      "icon": "FiCheck", // Can `Undefined`
+      "evalIsCompleted": "['submit', 'processing', 'completed', 'canceled'].includes('${status}')" // Can `Undefined`
     },
-    { "textTemplate": "${agency.firstName} ${agency.lastName}" },
-    { "key": "rfqNo", "valueType": "doc_no", "className": "text-primary" },
     {
-      "key": "updatedAt",
-      "valueType": "date",
-      "label": "last_update",
-      "className": "text-[10px] text-gray-500"
-    }
+      "title": "Title 2",
+      "subTitle": "${amount}",
+      "subTitleValueType": "number", // Can `Undefined`
+      "icon": "FiCheck", // Can `Undefined`
+      "showOnStatus": ["new","submit","processing","completed"], // Can `Undefined`
+      "evalIsCompleted": "['processing', 'completed'].includes('${status}')" // Can `Undefined`
+    },
+    {
+      "title": "Title 3",
+      "subTitle": "${rfq_no}",
+      "subTitleValueType": "doc_no", // Can `Undefined`
+      "icon": "FiCheck", // Can `Undefined`
+      "showOnStatus": ["canceled"], // Can `Undefined`
+      "evalIsCompleted": "!!'${process_date}'" // Can `Undefined`
+    },
+    {
+      "title": "Title 4",
+      "subTitle": "${completedDate}",
+      "subTitleValueType": "date", // Can `Undefined`
+      "icon": "FiCheck", // Can `Undefined`
+      "showOnStatus": ["new","submit","processing","completed"], // Can `Undefined`
+      "evalIsCompleted": "!!'${completedDate}'" // Can `Undefined`
+    },
   ],
-  "right": [{ "type": "blank" }, { "key": "status", "valueType": "status" }]
 }
 ```
