@@ -23,6 +23,44 @@
 }
 ```
 
+### Simple example `back` button
+
+```json
+{
+  "renderType": "button",
+  "buttons": [
+    {
+      "label": "Back",
+      "action": "back"
+    }
+  ]
+}
+
+### Simple example `redirect` button
+
+```json
+{
+  "renderType": "button",
+  "buttons": [
+    {
+      "label": "Back",
+      "action": "redirect",
+      "redirectUrl": "/sales/rfqs/${id}"
+    }
+  ]
+}
+
+```json
+{
+  "renderType": "button",
+  "buttons": [
+    {
+      "label": "Create"
+    }
+  ]
+}
+```
+
 ### Simple with custom style and className `button`
 
 ```json
@@ -111,7 +149,7 @@
   "buttons": [
     {
       "label": "Create",
-      "action": "internal_submit"
+      "action": "form_submit"
     }
   ]
 }
@@ -134,6 +172,22 @@
       "action": "share",
       "shareUrl": "https://www.google.com/${productType.code}",
       "shareMsg": "Share to ${productType.code}"
+    }
+  ]
+}
+```
+
+### Clone button
+
+```json
+{
+  "renderType": "button",
+  "buttons": [
+    {
+      "action": "clone",
+          "redirectUrl": "/sales/rfqs/${rfq}/price-list/${priceId}",
+          "entityName": "eazy_rfq_price_list",
+          "path": "/clone/${priceId}"
     }
   ]
 }
@@ -295,7 +349,7 @@
 }
 ```
 
-#### Use with `redirectUri`
+#### Use with `redirectUrl`
 
 ```json
 {
@@ -307,7 +361,7 @@
       "entityName": "eazy_digital",
       "path": "/approve/${id}", // /eazy_digital/approve/xxxxxx-xxxx-xxxx-xxxxxx
       "body": { "status": "cancel" },
-      "redirectUri": "/eazy_digital/${id}" // Redirect to /eazy_digital/xxxxxx-xxxx-xxxx-xxxxxx
+      "redirectUrl": "/eazy_digital/${id}" // Redirect to /eazy_digital/xxxxxx-xxxx-xxxx-xxxxxx
     },
     {
       "label": "Update 2",
@@ -315,7 +369,7 @@
       "entityName": "eazy_digital",
       "path": "/reject/${id}", // /eazy_digital/reject/xxxxxx-xxxx-xxxx-xxxxxx
       "body": { "productType": "'${productType.code}'" }, // Use body with text template eval, use single quote
-      "redirectUri": "/eazy_digital/sales/rfqs" // Redirect to /eazy_digital/sales/rfqs
+      "redirectUrl": "/eazy_digital/sales/rfqs" // Redirect to /eazy_digital/sales/rfqs
     },
   ]
 }

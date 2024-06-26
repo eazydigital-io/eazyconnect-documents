@@ -12,22 +12,25 @@ Use the JSON Component to Render a Component in the Agent V2.
 ## Table of Contents
 
 - Display type
-  - [Text](./text.md)
+  - [Alert](./alert.md)
   - [Button](./button.md)
-  - [Label](./label.md)
+  - [Divider](./divider.md)
   - [File](./file.md)
-  - [List](./list.md)
+  - [Label](./label.md)
   - [List Select Card](./list_select_card.md)
-  - [Step](./step.md)
-  - [Quote Card](./quote_card.md)
+  - [List Log](./list_log.md)
+  - [List](./list.md)
   - [Product Type Card](./product_type_card.md)
+  - [Quote Card](./quote_card.md)
+  - [Step](./step.md)
+  - [Text](./text.md)
 - Input type
+  - [Input Date](./input_date.md)
   - [Input Product Type Card](./input_product_type_card.md)
   - [Input Select](./input_select.md)
-  - [Input Text](./input_text.md)
   - [Input Text Area](./input_textarea.md)
+  - [Input Text](./input_text.md)
   - [Input Upload](./input_upload_.md)
-  - [Input Date](./input_date.md)
 
 ### Types
 
@@ -71,6 +74,7 @@ type ValueType =
   | "image"
   | "file"
   | "link"
+  | "download"
   | "blank";
 
 type Button = {
@@ -88,9 +92,13 @@ type Button = {
   label?: string;
   className?: string;
   action?:
+    | "back"
+    | "clone"
     | "share"
     | "download"
     | "internal_download"
+    | "redirect"
+    | "entity_create"
     | "entity_update"
     | "entity_patch"
     | "entity_delete"
@@ -103,7 +111,7 @@ type Button = {
   entityName?: string;
   url?: string;
   path?: string;
-  redirectUri?: string;
+  redirectUrl?: string;
   body?: object; // The value on the key object, have to be the string javascript only. please see the example in the button.md
   fileName?: string; // can use text template (ex: `${file.0.name}`)
   shareUrl?: string; // can use text template (ex: `${url}`)
