@@ -224,6 +224,11 @@ type SelectItem = {
 } & {
   [key in string]: string | number;
 };
+
+type ContentValue = {
+  key: string;
+  type?: ValueType; // Default: 'text'
+};
 ```
 
 ### Example `ValueType`
